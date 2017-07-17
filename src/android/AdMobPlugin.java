@@ -111,7 +111,7 @@ public class AdMobPlugin extends CordovaPlugin implements PluginDelegate, Plugin
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 		
-		else if (action.equals("setUp")) {
+		if (action.equals("setUp")) {
 			setUp(action, args, callbackContext);
 
 			return true;
