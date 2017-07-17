@@ -9,8 +9,8 @@
     <author>Sang Ki Kwon (Cranberrygame)</author>		
     <license>MIT</license>
     <keywords>cordova,plugin,ad,admob,monetisation</keywords>
-    <repo>https://github.com/cranberrygame/cordova-plugin-ad-admob</repo>
-    <issue>https://github.com/cranberrygame/cordova-plugin-ad-admob/issues</issue> 	
+    <repo>https://github.com/Junker/cordova-plugin-ad-admob</repo>
+    <issue>https://github.com/Junker/cordova-plugin-ad-admob/issues</issue> 	
 	<engines>
 	    <engine name="cordova" version=">=3.0.0" />
 	</engines>
