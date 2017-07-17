@@ -38,7 +38,6 @@ interface Plugin {
 }
 
 interface PluginDelegate {
-	public void _setLicenseKey(String email, String licenseKey);
 	public void _setUp(String bannerAdUnit, String interstitialAdUnit, String rewardedVideoAdUnit, boolean isOverlap, boolean isTest);
 	public void _preloadBannerAd();
 	public void _showBannerAd(String position, String size);
@@ -62,10 +61,11 @@ public class AdMobPlugin extends CordovaPlugin implements PluginDelegate, Plugin
 	public String email;
 	public String licenseKey;
 	public boolean validLicenseKey;
-	protected String TEST_BANNER_AD_UNIT = "ca-app-pub-4906074177432504/6997786077";
-	protected String TEST_INTERSTITIAL_AD_UNIT = "ca-app-pub-4906074177432504/8474519270";	
-	protected String TEST_REWARDED_VIDEO_AD_UNIT = "ca-app-pub-4906074177432504/2933446075";	
-	
+	protected String TEST_BANNER_AD_UNIT = "ca-app-pub-3940256099942544/6300978111";
+	protected String TEST_INTERSTITIAL_AD_UNIT = "ca-app-pub-3940256099942544/1033173712";	
+	protected String TEST_REWARDED_VIDEO_AD_UNIT = "ca-app-pub-3940256099942544/5224354917";	
+
+
     @Override
 	public void pluginInitialize() {
 		super.pluginInitialize();
@@ -110,12 +110,7 @@ public class AdMobPlugin extends CordovaPlugin implements PluginDelegate, Plugin
 	
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-
-		if (action.equals("setLicenseKey")) {
-			setLicenseKey(action, args, callbackContext);
-
-			return true;
-		}			
+		
 		else if (action.equals("setUp")) {
 			setUp(action, args, callbackContext);
 
@@ -165,20 +160,7 @@ public class AdMobPlugin extends CordovaPlugin implements PluginDelegate, Plugin
 		return false; // Returning false results in a "MethodNotFound" error.
 	}
 	
-	private void setLicenseKey(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-		final String email = args.getString(0);
-		final String licenseKey = args.getString(1);				
-		Log.d(LOG_TAG, String.format("%s", email));			
-		Log.d(LOG_TAG, String.format("%s", licenseKey));
-		
-		cordova.getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				_setLicenseKey(email, licenseKey);
-			}
-		});
-	}
-	
+
 	private void setUp(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 		//Activity activity=cordova.getActivity();
 		//webView
@@ -322,51 +304,12 @@ public class AdMobPlugin extends CordovaPlugin implements PluginDelegate, Plugin
 		return callbackContextKeepCallback;
 	}
 
-	//cranberrygame end: Plugin
-	
-	//cranberrygame start: AdMobPluginDelegate
-
-	public void _setLicenseKey(String email, String licenseKey) {
-		//pluginDelegate._setLicenseKey(email, licenseKey);
-		this.email = email;
-		this.licenseKey = licenseKey;
-		
-		//
-		String str1 = Util.md5("cordova-plugin-: " + email);
-		String str2 = Util.md5("cordova-plugin-ad-admob: " + email);
-		String str3 = Util.md5("com.cranberrygame.cordova.plugin.: " + email);
-		String str4 = Util.md5("com.cranberrygame.cordova.plugin.ad.admob: " + email);
-		if(licenseKey != null && (licenseKey.equalsIgnoreCase(str1) || licenseKey.equalsIgnoreCase(str2) || licenseKey.equalsIgnoreCase(str3) || licenseKey.equalsIgnoreCase(str4))) {
-			this.validLicenseKey = true;
-			//
-			String[] excludedLicenseKeys = {"xxx"};
-			for (int i = 0 ; i < excludedLicenseKeys.length ; i++) {
-				if (excludedLicenseKeys[i].equals(licenseKey)) {
-					this.validLicenseKey = false;
-					break;
-				}
-			}			
-			if (this.validLicenseKey)
-				Log.d(LOG_TAG, String.format("%s", "valid licenseKey"));
-			else
-				Log.d(LOG_TAG, String.format("%s", "invalid licenseKey"));
-		}
-		else {
-			Log.d(LOG_TAG, String.format("%s", "invalid licenseKey"));
-			this.validLicenseKey = false;			
-		}
-		//if (!this.validLicenseKey)
-		//	Util.alert(plugin.getCordova().getActivity(),"Cordova Admob: invalid email / license key. You can get free license key from https://play.google.com/store/apps/details?id=com.cranberrygame.pluginsforcordova");			
-	}
-	
 	public void _setUp(String bannerAdUnit, String interstitialAdUnit, String rewardedVideoAdUnit, boolean isOverlap, boolean isTest) {
-		if (!validLicenseKey) {
-			if (new Random().nextInt(100) <= 1) {//0~99					
+			if (isTest) {				
 				bannerAdUnit = TEST_BANNER_AD_UNIT;
 				interstitialAdUnit = TEST_INTERSTITIAL_AD_UNIT;
 				rewardedVideoAdUnit = TEST_REWARDED_VIDEO_AD_UNIT;
 			}
-		}
 			
 		pluginDelegate._setUp(bannerAdUnit, interstitialAdUnit, rewardedVideoAdUnit, isOverlap, isTest);
 	}

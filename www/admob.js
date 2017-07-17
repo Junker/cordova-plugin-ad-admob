@@ -7,17 +7,7 @@ module.exports = {
 	_isShowingInterstitialAd: false,
 	_isShowingRewardedVideoAd: false,	
 	_fixCocoonIOCordovaAndroidAdMobIssue: false,
-	//
-	setLicenseKey: function(email, licenseKey) {
-		var self = this;	
-        cordova.exec(
-            null,
-            null,
-            'AdMobPlugin',
-            'setLicenseKey',			
-            [email, licenseKey]
-        ); 
-    },
+
 	setUp: function(bannerAdUnit, interstitialAdUnit, rewardedVideoAdUnit, isOverlap, isTest) {
         if (typeof isTest == 'undefined') {
             //isOverlap=rewardedVideoAdUnit;
